@@ -7,7 +7,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Ablauf, es werten:
 # - ein Thread gestartet, der ohne sleep dauerhaft was tut (und zu gucken, ob es sowas wie Preemtion gibt)
-#   -
+#   - hat einer for-Schleife ebenso funktioniert wie auch mit perf_counter()
 # - ein paar Signalhandler registriert (zum prüfen, ob simultan zum Rest, auf Signale reagiert wird)
 # - 4 "WorkerThreads" instanziiert, die auf einer Queue lauschen und dort auf Arbeit warten
 # - die Queue mit "Arbeit" gefüllt
@@ -47,13 +47,13 @@ def fillQueue():
 def blockingThreadFunc():
     while True:
         start = time.perf_counter()
-        #while True:
-        #    elapsed = time.perf_counter() - start
-        #    if elapsed > 5: break
-        i=0
         while True:
-            i = i + 1
-            if i > 10000000: break
+            elapsed = time.perf_counter() - start
+            if elapsed > 5: break
+        #i=0
+        #while True:
+        #    i = i + 1
+        #    if i > 10000000: break
         with lock: print(threading.current_thread().name, "Hellö 𝘑𝘰𝘦  😎")
 
 def startBlockingThread():
