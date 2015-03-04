@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 ########################################################################################################################
 # Joe's Python Experimente - Multithreading Test
 #-----------------------------------------------------------------------------------------------------------------------
@@ -6,8 +6,9 @@
 # \creation   2015-03-04, Joe Merten
 #-----------------------------------------------------------------------------------------------------------------------
 # Ablauf, es werten:
-# - ein Thread gestartet, der ohne sleep dauerhaft was tut (und zu gucken, ob es sowas wie Preemtion gibt)
+# - ein (bzw. jetzt 4) Threads gestartet, der ohne sleep dauerhaft was tut (und zu gucken, ob es sowas wie Preemtion gibt)
 #   - hat einer for-Schleife ebenso funktioniert wie auch mit perf_counter()
+#   - offensichtlich wird nur 1 Cpu Kern verwendet
 # - ein paar Signalhandler registriert (zum prüfen, ob simultan zum Rest, auf Signale reagiert wird)
 # - 4 "WorkerThreads" instanziiert, die auf einer Queue lauschen und dort auf Arbeit warten
 # - die Queue mit "Arbeit" gefüllt
@@ -57,9 +58,10 @@ def blockingThreadFunc():
         with lock: print(threading.current_thread().name, "Hellö 𝘑𝘰𝘦  😎")
 
 def startBlockingThread():
-    bt = threading.Thread(target=blockingThreadFunc, name="Blocking")
-    bt.daemon = True
-    bt.start()
+    for i in range(4):
+        bt = threading.Thread(target=blockingThreadFunc, name="Blocking " + str(i+1))
+        bt.daemon = True
+        bt.start()
 
 
 def signalHandler(signum, frame):
