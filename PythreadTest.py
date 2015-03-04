@@ -14,8 +14,6 @@
 # - auf Beendigung der Queue-Abarbeitung (durch die WorkerThreads) gewartet
 ########################################################################################################################
 
-# -*- coding: utf-8 -*-
-
 import threading
 from queue import Queue
 import time
@@ -55,8 +53,8 @@ def blockingThreadFunc():
         i=0
         while True:
             i = i + 1
-            if i > 100000000: break
-        with lock: print(threading.current_thread().name, "Hellö")
+            if i > 10000000: break
+        with lock: print(threading.current_thread().name, "Hellö 𝘑𝘰𝘦  😎")
 
 def startBlockingThread():
     bt = threading.Thread(target=blockingThreadFunc, name="Blocking")
